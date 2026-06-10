@@ -1,0 +1,374 @@
+
+
+
+👨‍💻 MEMBER 2 - ADMIN MODULE
+🎯 Objective
+
+Tumhara kaam EventSphere Management System ka complete Admin Panel develop karna hai.
+
+Admin poore system ko manage karega, jaise Expo create karna, Booth assign karna, Exhibitors approve/reject karna aur Reports dekhna.
+
+📄 Pages to Design
+
+Tumhe ye pages banane hain:
+
+Dashboard
+Expo Management
+Booth Management
+Exhibitor Management
+Session Management
+Reports
+Analytics
+Settings
+
+Ye sab pages responsive aur professional hone chahiye.
+
+🎨 UI Theme Suggestion
+Theme Name
+
+Modern Professional Admin Dashboard
+
+Ye Event Management System ke Admin Panel ke liye perfect hai.
+
+🎨 Color Palette
+Element	Color
+Primary	#4F46E5
+Secondary	#7C3AED
+Background	#F8FAFC
+Sidebar	#1E293B
+Card	#FFFFFF
+Text	#1E293B
+Success	#22C55E
+Warning	#F59E0B
+Danger	#EF4444
+🔤 Font
+
+Poppins
+
+ya
+
+Inter
+
+Poore Admin Module mein same font use karna hai.
+
+🖥️ Dashboard Design
+------------------------------------------------------------
+
+Sidebar
+
+🏠 Dashboard
+📅 Expo Management
+🏢 Booth Management
+👨‍💼 Exhibitors
+🎤 Sessions
+📊 Reports
+📈 Analytics
+⚙️ Settings
+
+------------------------------------------------------------
+
+Top Navbar
+
+🔔 Notifications
+
+👤 Admin Profile
+
+------------------------------------------------------------
+
+Cards
+
+Total Expos
+
+Total Booths
+
+Total Exhibitors
+
+Total Attendees
+
+------------------------------------------------------------
+
+Recent Activities Table
+
+Upcoming Events
+
+Latest Registrations
+
+------------------------------------------------------------
+Dashboard Features
+Statistic Cards
+Recent Activity
+Quick Actions
+Charts (placeholder)
+Responsive Layout
+🖥️ Expo Management Page
+------------------------------------------------
+
+Expo Management
+
+[ Add New Expo ]
+
+------------------------------------------------
+
+Expo Table
+
+Title
+
+Theme
+
+Date
+
+Location
+
+Status
+
+Edit
+
+Delete
+
+------------------------------------------------
+Features
+Add Expo
+Edit Expo
+Delete Expo
+Search Expo
+Filter Expo
+🖥️ Booth Management Page
+--------------------------------------------
+
+Booth List
+
+Booth No.
+
+Status
+
+Assigned To
+
+Action
+
+--------------------------------------------
+
+Available
+
+Reserved
+
+Occupied
+
+--------------------------------------------
+Features
+Create Booth
+Assign Booth
+Update Booth
+Delete Booth
+🖥️ Exhibitor Management
+--------------------------------------------
+
+Company
+
+Owner
+
+Status
+
+Approve
+
+Reject
+
+View
+
+--------------------------------------------
+Features
+View Applications
+Approve Exhibitor
+Reject Exhibitor
+View Company Details
+🖥️ Session Management
+----------------------------------------
+
+Session Title
+
+Speaker
+
+Time
+
+Location
+
+Edit
+
+Delete
+
+----------------------------------------
+Features
+Add Session
+Edit Session
+Delete Session
+🖥️ Reports Page
+----------------------------------
+
+Export Reports
+
+PDF
+
+Excel
+
+CSV
+
+----------------------------------
+
+Total Attendees
+
+Total Booths
+
+Total Revenue
+
+----------------------------------
+🖥️ Analytics Page
+--------------------------------
+
+Visitors Chart
+
+Expo Performance
+
+Session Popularity
+
+Booth Traffic
+
+--------------------------------
+
+Charts placeholder bhi chalega.
+
+🖥️ Settings Page
+--------------------------------
+
+Admin Profile
+
+Change Password
+
+Site Settings
+
+Notification Settings
+
+--------------------------------
+📱 Responsive Design
+
+Ye pages properly work karein:
+
+Desktop
+Laptop
+Tablet
+Mobile
+🎯 Components
+
+Reusable components banao:
+
+components/
+
+Sidebar.jsx
+
+TopNavbar.jsx
+
+DashboardCard.jsx
+
+Table.jsx
+
+Modal.jsx
+
+Button.jsx
+
+Loader.jsx
+
+SearchBar.jsx
+📂 Folder Structure
+pages/
+
+admin/
+
+Dashboard.jsx
+
+ExpoManagement.jsx
+
+BoothManagement.jsx
+
+ExhibitorManagement.jsx
+
+SessionManagement.jsx
+
+Reports.jsx
+
+Analytics.jsx
+
+Settings.jsx
+⚙️ Backend Work
+
+Admin APIs banana:
+
+Create Expo
+Update Expo
+Delete Expo
+Get Expo List
+Approve Exhibitor
+Reject Exhibitor
+Assign Booth
+Reports API
+Analytics API
+🗄️ Database Models
+Expo
+Title
+
+Description
+
+Theme
+
+Date
+
+Location
+
+Status
+Booth
+Booth Number
+
+Status
+
+Assigned Exhibitor
+
+CreatedAt
+✨ Animation
+Card Hover Effect
+Button Hover
+Sidebar Collapse Animation
+Table Row Hover
+Smooth Page Transition
+
+Professional aur simple animations use karna.
+
+📌 Design Inspiration
+
+Admin Panel ka UI AdminLTE, CoreUI, Material Dashboard, ya modern SaaS dashboards jaisa clean aur professional feel dena chahiye.
+
+Overall Look
+Dark Sidebar
+White Content Area
+Statistic Cards
+Modern Tables
+Clean Icons
+Soft Shadows
+Rounded Corners (10–12px)
+Consistent Spacing
+✅ Final Deliverables
+
+Member 2 ko complete karke dena hoga:
+
+✔ Dashboard
+✔ Expo Management
+✔ Booth Management
+✔ Exhibitor Management
+✔ Session Management
+✔ Reports
+✔ Analytics
+✔ Settings
+✔ Responsive UI
+✔ CRUD APIs
+✔ Clean & Reusable Components
+⭐ Meri recommendation
+
+Admin Module poore project ka control center hai. Isliye iska design premium aur organized hona chahiye. Dark sidebar + light content area + modern cards + responsive tables use karo, aur wahi color palette follow karo jo Authentication module mein use hui hai, taake poore EventSphere project ka design consistent aur professional lage.
+
+
