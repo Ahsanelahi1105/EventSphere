@@ -1,6 +1,9 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
+
+import axios from "axios";
 
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthCard from "../../components/auth/AuthCard";
@@ -9,6 +12,7 @@ import AuthButton from "../../components/auth/AuthButton";
 import "../../styles/register.css";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -28,11 +32,43 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+          role: formData.role,
+        }
+      );
+
+      alert(data.message);
+
+      navigate("/login");
+
+    } catch (error) {
+
+      alert(
+        error.response?.data?.message ||
+        "Registration Failed"
+      );
+
+    }
   };
+
+
 
   return (
     <AuthLayout>

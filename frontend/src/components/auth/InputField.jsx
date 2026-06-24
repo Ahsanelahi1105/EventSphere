@@ -1,31 +1,32 @@
+
 import React from "react";
 
 const InputField = ({
-    label,
-    type,
-    placeholder,
-    value,
-    onChange,
+  label,
+  type,
+  name,
+  placeholder,
+  value,
+  onChange,
 }) => {
-    return (
-        <div className="mb-3">
+  return (
+    <div className="mb-3">
 
-            <label className="form-label fw-semibold">
-                {label}
-            </label>
+      <label className="form-label fw-semibold">
+        {label}
+      </label>
 
-            <input
-                type={type}
-                className="form-control"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-            />
+      <input
+        type={type}
+        name={name}
+        className="form-control"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
 
-        </div>
-    );
+    </div>
+  );
 };
-
-
 
 export default InputField;
