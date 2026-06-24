@@ -1,24 +1,54 @@
+
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthCard from "../../components/auth/AuthCard";
 import InputField from "../../components/auth/InputField";
 import AuthButton from "../../components/auth/AuthButton";
 
+
 const ResetPassword = () => {
+
+  const navigate = useNavigate();
+  const { token } = useParams();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log({
-      password,
-      confirmPassword,
-    });
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+
+      const { data } = await axios.put(
+        `http://localhost:5000/api/auth/reset-password/${token}`,
+        {
+          password,
+        }
+      );
+
+      alert(data.message);
+
+      navigate("/login");
+
+    } catch (error) {
+
+      alert(
+        error.response?.data?.message ||
+        "Password Reset Failed"
+      );
+
+    }
   };
+
 
   return (
 

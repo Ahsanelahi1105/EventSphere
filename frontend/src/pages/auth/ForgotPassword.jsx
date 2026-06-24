@@ -1,18 +1,44 @@
+
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthCard from "../../components/auth/AuthCard";
 import InputField from "../../components/auth/InputField";
 import AuthButton from "../../components/auth/AuthButton";
 
+
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
+
+    try {
+
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/forgot-password",
+        { email }
+      );
+
+      alert(data.message);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
+    } catch (error) {
+
+      alert(
+        error.response?.data?.message ||
+        "Failed to send reset email"
+      );
+
+    }
   };
+
 
   return (
     <AuthLayout>
