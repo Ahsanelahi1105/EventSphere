@@ -1,5 +1,8 @@
 import { Route, Navigate } from "react-router-dom";
 
+import PrivateRoute from "./PrivateRoute";
+import RoleRoute from "./RoleRoute";
+
 import AdminLayout from "../layouts/AdminLayout";
 
 import Dashboard from "../pages/admin/Dashboard";
@@ -12,7 +15,18 @@ import Analytics from "../pages/admin/Analytics";
 import Settings from "../pages/admin/Settings";
 
 const AdminRoutes = () => (
-  <Route path="/admin" element={<AdminLayout />}>
+
+  <Route
+    path="/admin"
+    element={
+      <PrivateRoute>
+        <RoleRoute allowedRole="admin">
+          <AdminLayout />
+        </RoleRoute>
+      </PrivateRoute>
+    }
+  >
+
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="expos" element={<ExpoManagement />} />

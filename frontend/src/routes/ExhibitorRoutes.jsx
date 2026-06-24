@@ -1,5 +1,8 @@
 import { Route, Navigate } from "react-router-dom";
 
+import PrivateRoute from "./PrivateRoute";
+import RoleRoute from "./RoleRoute";
+
 import ExhibitorLayout from "../layouts/ExhibitorLayout";
 
 import Dashboard from "../pages/exhibitor/Dashboard";
@@ -11,7 +14,17 @@ import MyBooth from "../pages/exhibitor/MyBooth";
 import Messages from "../pages/exhibitor/Messages";
 
 const ExhibitorRoutes = () => (
-  <Route path="/exhibitor" element={<ExhibitorLayout />}>
+  <Route
+    path="/exhibitor"
+    element={
+      <PrivateRoute>
+        <RoleRoute allowedRole="exhibitor">
+          <ExhibitorLayout />
+        </RoleRoute>
+      </PrivateRoute>
+    }
+  >
+
     <Route index element={<Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="profile" element={<Profile />} />

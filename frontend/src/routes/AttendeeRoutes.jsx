@@ -1,5 +1,8 @@
 import { Route, Navigate } from "react-router-dom";
 
+import PrivateRoute from "./PrivateRoute";
+import RoleRoute from "./RoleRoute";
+
 import AttendeeLayout from "../layouts/AttendeeLayout";
 
 import Dashboard from "../pages/attendee/Dashboard";
@@ -12,8 +15,18 @@ import Notifications from "../pages/attendee/Notifications";
 import Feedback from "../pages/attendee/Feedback";
 
 const AttendeeRoutes = () => (
-  <Route path="/attendee" element={<AttendeeLayout />}>
-    <Route index element={<Navigate to="dashboard" replace />} />
+  <Route
+    path="/attendee"
+    element={
+      <PrivateRoute>
+        <RoleRoute allowedRole="attendee">
+          <AttendeeLayout />
+        </RoleRoute>
+      </PrivateRoute>
+    }
+  >
+
+    < Route index element={< Navigate to="dashboard" replace />} />
     <Route path="dashboard" element={<Dashboard />} />
     <Route path="events" element={<Events />} />
     <Route path="events/:id" element={<EventDetails />} />
@@ -22,7 +35,7 @@ const AttendeeRoutes = () => (
     <Route path="bookmarks" element={<Bookmarks />} />
     <Route path="notifications" element={<Notifications />} />
     <Route path="feedback" element={<Feedback />} />
-  </Route>
+  </Route >
 );
 
 export default AttendeeRoutes;
