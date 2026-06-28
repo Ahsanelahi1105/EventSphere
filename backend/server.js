@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const expoRoutes = require("./routes/expoRoutes");
+const boothRoutes = require("./routes/boothRoutes");
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/expos", expoRoutes);
+app.use("/api/booths", boothRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 EventSphere Backend Running");
