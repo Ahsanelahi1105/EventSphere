@@ -13,6 +13,7 @@ import Sessions from "../pages/attendee/Sessions";
 import Bookmarks from "../pages/attendee/Bookmarks";
 import Notifications from "../pages/attendee/Notifications";
 import Feedback from "../pages/attendee/Feedback";
+import Profile from "../pages/attendee/Profile";
 
 const AttendeeRoutes = () => (
   <Route
@@ -35,6 +36,8 @@ const AttendeeRoutes = () => (
     <Route path="bookmarks" element={<Bookmarks />} />
     <Route path="notifications" element={<Notifications />} />
     <Route path="feedback" element={<Feedback />} />
+    <Route path="profile" element={<Profile />} />
+    
   </Route >
 );
 

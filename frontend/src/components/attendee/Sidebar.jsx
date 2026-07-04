@@ -50,11 +50,11 @@ const Sidebar = () => {
       icon: <FaCommentDots />,
       path: "/attendee/feedback",
     },
-    {
-      title: "Profile",
-      icon: <FaUser />,
-      path: "/attendee/profile",
-    },
+    // {
+    //   title: "Profile",
+    //   icon: <FaUser />,
+    //   path: "/attendee/profile",
+    // },
   ];
 
   return (

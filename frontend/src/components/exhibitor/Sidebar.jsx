@@ -65,11 +65,16 @@ const Sidebar = () => {
 
       <div className="sidebar-logo">
 
-        <h3>EventSphere</h3>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png"
+            alt="logo"
+          />
 
-        <span>Exhibitor Panel</span>
+          <h3>EventSphere</h3>
 
-      </div>
+          <span>Exhibitor Portal</span>
+
+        </div>
 
       <div className="sidebar-menu">
 

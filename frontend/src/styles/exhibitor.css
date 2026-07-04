@@ -21,13 +21,13 @@ body{
 }
 
 .sidebar-logo{
-    padding:30px;
+    padding:20px;
     text-align:center;
 }
 
 .sidebar-logo h3{
     font-weight:700;
-    margin-bottom:5px;
+    margin-bottom:2px;
 }
 
 .sidebar-logo span{
@@ -77,6 +77,7 @@ body{
     background:rgba(255,255,255,.12);
     border-radius:12px;
     padding:12px;
+    margin-bottom: 30px;
 }
 
 .company-card img{

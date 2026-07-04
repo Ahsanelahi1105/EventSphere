@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+.navbar{
+    width:100%;
+    background:#fff;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.container{
+    width:90%;
+    max-width:1400px;
+    margin:auto;
+    height:75px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    text-decoration:none;
+    color:#4F46E5;
+    font-size:32px;
+    font-weight:700;
+}
+
+.logo span{
+    color:#7C3AED;
+}
+
+.nav{
+    display:flex;
+    align-items:center;
+    gap:25px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#1E293B;
+    font-weight:500;
+    transition:.3s;
+}
+
+.nav a:hover,
+.nav a.active{
+    color:#4F46E5;
+}
+
+.login-btn,
+.dashboard-btn{
+    padding:11px 24px;
+    border-radius:10px;
+    background:#4F46E5;
+    color:#fff !important;
+}
+
+.login-btn:hover,
+.dashboard-btn:hover{
+    background:#4338CA;
+}
+
+.register-btn{
+    padding:11px 24px;
+    border-radius:10px;
+    border:2px solid #4F46E5;
+}
+
+.register-btn:hover{
+    background:#4F46E5;
+    color:white !important;
+}
+
+.logout-btn{
+    padding:11px 24px;
+    border:none;
+    border-radius:10px;
+    background:#EF4444;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+}
+
+.logout-btn:hover{
+    background:#DC2626;
+}
+
+.hamburger{
+    display:none;
+    font-size:30px;
+    cursor:pointer;
+}
+
+@media(max-width:900px){
+
+.nav{
+
+position:absolute;
+top:75px;
+left:0;
+width:100%;
+background:white;
+flex-direction:column;
+padding:25px;
+display:none;
+
+}
+
+.nav.active{
+display:flex;
+}
+
+.hamburger{
+display:block;
+}
+
+}

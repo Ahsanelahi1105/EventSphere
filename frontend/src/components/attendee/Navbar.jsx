@@ -97,7 +97,7 @@ const Navbar = () => {
                 <FaUserCircle className="me-2" />
 
                 Profile
-
+                  
               </button>
 
             </li>
