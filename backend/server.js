@@ -9,6 +9,8 @@ const boothRoutes = require("./routes/boothRoutes");
 const exhibitorRoutes = require("./routes/exhibitorRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
 const reportRoutes = require("./routes/reportRoutes");
+const messageRoutes = require("./routes/messageRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
 
 dotenv.config();
 
@@ -26,6 +28,8 @@ app.use("/api/booths", boothRoutes);
 app.use("/api/exhibitors", exhibitorRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/applications", applicationRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 EventSphere Backend Running");

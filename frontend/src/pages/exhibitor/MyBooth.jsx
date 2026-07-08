@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   FaStore,
   FaMapMarkerAlt,
@@ -8,6 +10,81 @@ import {
 } from "react-icons/fa";
 
 const MyBooth = () => {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [booth, setBooth] = useState(null);
+
+  const getMyBooth = async () => {
+    try {
+
+      // Logged in Exhibitor
+
+      const { data: exhibitorData } = await axios.get(
+        `http://localhost:5000/api/exhibitors/${user.id}`
+      );
+
+      const exhibitorId = exhibitorData.exhibitor._id;
+
+      // My Booth
+
+      const { data } = await axios.get(
+        `http://localhost:5000/api/booths/my-booth/${exhibitorId}`
+      );
+
+      if (data.success) {
+        setBooth(data.booth);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  };
+
+  const downloadPass = async () => {
+    try {
+
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const { data } = await axios.get(
+        `http://localhost:5000/api/exhibitors/${user.id}`
+      );
+
+      const exhibitorId = data.exhibitor._id;
+
+      window.open(
+        `http://localhost:5000/api/booths/pass/${exhibitorId}`,
+        "_blank"
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  };
+
+  useEffect(() => {
+    getMyBooth();
+  }, []);
+
+  if (!booth) {
+    return (
+      <div className="container-fluid">
+
+        <div className="alert alert-warning">
+
+          You have not reserved any booth yet.
+
+        </div>
+
+      </div>
+    );
+  }
+
+
   return (
     <div className="container-fluid">
 
@@ -35,7 +112,7 @@ const MyBooth = () => {
                   </span>
 
                   <h3 className="fw-bold mt-3">
-                    Booth A-12
+                    Booth {booth.boothNumber}
                   </h3>
 
                 </div>
@@ -59,9 +136,9 @@ const MyBooth = () => {
 
                   <p>
 
-                    <FaMapMarkerAlt className="text-danger me-2"/>
+                    <FaMapMarkerAlt className="text-danger me-2" />
 
-                    Hall A
+                    {booth.expo?.venue}
 
                   </p>
 
@@ -75,9 +152,9 @@ const MyBooth = () => {
 
                   <p className="text-success">
 
-                    <FaCheckCircle className="me-2"/>
+                    <FaCheckCircle className="me-2" />
 
-                    Reserved
+                    {booth.status}
 
                   </p>
 
@@ -91,7 +168,7 @@ const MyBooth = () => {
 
                   <p>
 
-                    <FaUsers className="me-2"/>
+                    <FaUsers className="me-2" />
 
                     5 Members
 
@@ -107,7 +184,7 @@ const MyBooth = () => {
 
                   <p>
 
-                    <FaBoxOpen className="me-2"/>
+                    <FaBoxOpen className="me-2" />
 
                     18 Products
 
@@ -144,17 +221,20 @@ const MyBooth = () => {
 
               <h5 className="fw-bold">
 
-                AI & Technology Expo
+                {booth.expo?.title}
 
               </h5>
 
               <p className="text-muted">
 
-                Karachi Expo Centre
+                {booth.expo?.venue}
 
               </p>
 
-              <button className="btn btn-primary w-100">
+              <button
+                className="btn btn-primary w-100"
+                onClick={downloadPass}
+              >
 
                 Download Booth Pass
 

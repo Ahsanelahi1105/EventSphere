@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import {
   FaMapMarkerAlt,
   FaCalendarAlt,
@@ -6,34 +8,102 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 
-const expos = [
-  {
-    id: 1,
-    title: "AI & Technology Expo 2026",
-    location: "Karachi Expo Centre",
-    date: "12 Jan 2026",
-    image:
-      "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
-  },
-  {
-    id: 2,
-    title: "Startup Business Summit",
-    location: "Lahore Convention Center",
-    date: "22 Feb 2026",
-    image:
-      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200",
-  },
-  {
-    id: 3,
-    title: "Healthcare Innovation Expo",
-    location: "Islamabad Expo",
-    date: "18 Mar 2026",
-    image:
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
-  },
-];
+// const expos = [
+//   {
+//     id: 1,
+//     title: "AI & Technology Expo 2026",
+//     location: "Karachi Expo Centre",
+//     date: "12 Jan 2026",
+//     image:
+//       "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
+//   },
+//   {
+//     id: 2,
+//     title: "Startup Business Summit",
+//     location: "Lahore Convention Center",
+//     date: "22 Feb 2026",
+//     image:
+//       "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200",
+//   },
+//   {
+//     id: 3,
+//     title: "Healthcare Innovation Expo",
+//     location: "Islamabad Expo",
+//     date: "18 Mar 2026",
+//     image:
+//       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
+//   },
+// ];
+
+
+
+
 
 const ApplyExpo = () => {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [expos, setExpos] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const getExpos = async () => {
+    try {
+
+      const { data } = await axios.get(
+        "http://localhost:5000/api/expos"
+      );
+
+      if (data.success) {
+        setExpos(data.expos);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
+  useEffect(() => {
+    getExpos();
+  }, []);
+
+  const applyExpo = async (expoId) => {
+
+    try {
+
+      const { data: exhibitorData } = await axios.get(
+        `http://localhost:5000/api/exhibitors/${user.id}`
+      );
+
+      const exhibitorId = exhibitorData.exhibitor._id;
+
+      const { data } = await axios.post(
+        "http://localhost:5000/api/applications",
+        {
+          exhibitor: exhibitorId,
+          expo: expoId,
+        }
+      );
+
+      alert(data.message);
+
+    } catch (error) {
+
+      alert(
+        error.response?.data?.message ||
+        "Application Failed"
+      );
+
+    }
+
+  };
+
   return (
     <div className="container-fluid">
 
@@ -125,7 +195,8 @@ const ApplyExpo = () => {
             >
 
               <img
-                src={expo.image}
+                // src={expo.banner}
+                src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200"
                 alt={expo.title}
                 className="card-img-top"
                 style={{
@@ -146,7 +217,7 @@ const ApplyExpo = () => {
 
                   <FaMapMarkerAlt className="me-2 text-danger" />
 
-                  {expo.location}
+                  {expo.venue}
 
                 </p>
 
@@ -154,22 +225,22 @@ const ApplyExpo = () => {
 
                   <FaCalendarAlt className="me-2 text-primary" />
 
-                  {expo.date}
+                  {new Date(expo.startDate).toLocaleDateString()}
 
                 </p>
 
                 <p className="text-muted">
-                  Join this exhibition to showcase your products and connect with thousands of visitors.
+                  {expo.description}
                 </p>
 
                 <div className="mt-auto">
 
-                  <button className="btn btn-primary w-100">
-
+                  <button
+                    className="btn btn-primary w-100"
+                    onClick={() => applyExpo(expo._id)}
+                  >
                     <FaPaperPlane className="me-2" />
-
                     Apply Now
-
                   </button>
 
                 </div>

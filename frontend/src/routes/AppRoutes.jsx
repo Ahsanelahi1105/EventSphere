@@ -15,6 +15,7 @@ import AdminRoutes from "./AdminRoutes";
 import ExhibitorRoutes from "./ExhibitorRoutes";
 import AttendeeRoutes from "./AttendeeRoutes";
 
+
 const AppRoutes = () => {
   return (
     <Routes>

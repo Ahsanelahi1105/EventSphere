@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const boothSchema = new mongoose.Schema(
@@ -7,6 +6,12 @@ const boothSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Expo",
       required: true,
+    },
+
+    exhibitor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Exhibitor",
+      default: null,
     },
 
     boothNumber: {
@@ -33,11 +38,7 @@ const boothSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: [
-        "Available",
-        "Reserved",
-        "Booked",
-      ],
+      enum: ["Available", "Reserved", "Booked"],
       default: "Available",
     },
 
@@ -51,7 +52,4 @@ const boothSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model(
-  "Booth",
-  boothSchema
-);
+module.exports = mongoose.model("Booth", boothSchema);

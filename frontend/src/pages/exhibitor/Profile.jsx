@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaCamera,
   FaEnvelope,
@@ -9,7 +9,104 @@ import {
   FaSave,
 } from "react-icons/fa";
 
+import axios from "axios";
+
 const Profile = () => {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [isProfileExist, setIsProfileExist] = useState(false);
+
+  const [profile, setProfile] = useState({
+    companyName: "",
+    ownerName: "",
+    email: "",
+    phone: "",
+    website: "",
+    businessCategory: "",
+    address: "",
+    description: "",
+    logo: "",
+  });
+
+  const getProfile = async () => {
+
+    try {
+
+      const { data } = await axios.get(
+        `http://localhost:5000/api/exhibitors/${user.id}`
+      );
+
+      if (data.success) {
+        setProfile(data.exhibitor);
+        setIsProfileExist(true);
+      }
+
+    } catch (error) {
+
+      setIsProfileExist(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const saveProfile = async () => {
+
+    try {
+
+      await axios.get(
+        `http://localhost:5000/api/exhibitors/${user.id}`
+      );
+
+      // Profile Exists
+
+      const { data } = await axios.put(
+        `http://localhost:5000/api/exhibitors/${user.id}`,
+        {
+          ...profile,
+          user: user.id,
+        }
+      );
+
+      alert(data.message);
+
+    }
+
+    catch (error) {
+
+      if (error.response?.status === 404) {
+
+        const { data } = await axios.post(
+          "http://localhost:5000/api/exhibitors",
+          {
+            ...profile,
+            user: user.id,
+          }
+        );
+
+        alert(data.message);
+
+        getProfile();
+
+      }
+
+      else {
+
+        alert(
+          error.response?.data?.message ||
+          "Something went wrong"
+        );
+
+      }
+
+    }
+
+  };
+
+
   return (
     <div className="container-fluid">
 
@@ -42,7 +139,11 @@ const Profile = () => {
               >
 
                 <img
-                  src="https://ui-avatars.com/api/?name=Tech+Solutions&background=4F46E5&color=fff&size=180"
+                  src={
+                    profile.logo
+                      ? profile.logo
+                      : "https://ui-avatars.com/api/?name=Company"
+                  }
                   alt=""
                   className="rounded-circle shadow"
                   width="170"
@@ -63,7 +164,7 @@ const Profile = () => {
 
               <h3 className="fw-bold mt-4">
 
-                Tech Solutions Pvt Ltd
+                {profile.companyName}
 
               </h3>
 
@@ -98,7 +199,14 @@ const Profile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="Tech Solutions Pvt Ltd"
+                    value={profile.companyName}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        companyName: e.target.value
+                      })
+                    }
                   />
 
                 </div>
@@ -114,7 +222,14 @@ const Profile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="Ahsan Khan"
+                    value={profile.ownerName}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        ownerName: e.target.value
+                      })
+                    }
                   />
 
                 </div>
@@ -123,7 +238,7 @@ const Profile = () => {
 
                   <label className="form-label">
 
-                    <FaEnvelope className="me-2"/>
+                    <FaEnvelope className="me-2" />
 
                     Email
 
@@ -132,7 +247,14 @@ const Profile = () => {
                   <input
                     type="email"
                     className="form-control"
-                    defaultValue="tech@gmail.com"
+                    value={profile.email}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        email: e.target.value
+                      })
+                    }
                   />
 
                 </div>
@@ -141,7 +263,7 @@ const Profile = () => {
 
                   <label className="form-label">
 
-                    <FaPhone className="me-2"/>
+                    <FaPhone className="me-2" />
 
                     Phone
 
@@ -150,7 +272,14 @@ const Profile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="+92 300 1234567"
+                    value={profile.phone}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        phone: e.target.value
+                      })
+                    }
                   />
 
                 </div>
@@ -159,7 +288,7 @@ const Profile = () => {
 
                   <label className="form-label">
 
-                    <FaGlobe className="me-2"/>
+                    <FaGlobe className="me-2" />
 
                     Website
 
@@ -168,7 +297,14 @@ const Profile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="www.techsolutions.com"
+                    value={profile.website}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        website: e.target.value
+                      })
+                    }
                   />
 
                 </div>
@@ -177,13 +313,22 @@ const Profile = () => {
 
                   <label className="form-label">
 
-                    <FaBuilding className="me-2"/>
+                    <FaBuilding className="me-2" />
 
                     Business Category
 
                   </label>
 
                   <select className="form-select">
+
+                    {/* value={profile.businessCategory}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        businessCategory: e.target.value
+                      })
+                    } */}
 
                     <option>Technology</option>
                     <option>Healthcare</option>
@@ -198,7 +343,7 @@ const Profile = () => {
 
                   <label className="form-label">
 
-                    <FaMapMarkerAlt className="me-2"/>
+                    <FaMapMarkerAlt className="me-2" />
 
                     Address
 
@@ -207,7 +352,14 @@ const Profile = () => {
                   <input
                     type="text"
                     className="form-control"
-                    defaultValue="Karachi, Pakistan"
+                    value={profile.address}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        address: e.target.value
+                      })
+                    }
                   />
 
                 </div>
@@ -223,16 +375,26 @@ const Profile = () => {
                   <textarea
                     rows="5"
                     className="form-control"
-                    defaultValue="We provide innovative software solutions and participate in international technology exhibitions."
+                    value={profile.description}
+
+                    onChange={(e) =>
+                      setProfile({
+                        ...profile,
+                        description: e.target.value
+                      })
+                    }
                   ></textarea>
 
                 </div>
 
                 <div className="col-12">
 
-                  <button className="btn btn-primary px-5">
+                  <button
+                    className="btn btn-primary px-5"
+                    onClick={saveProfile}
+                  >
 
-                    <FaSave className="me-2"/>
+                    <FaSave className="me-2" />
 
                     Save Changes
 

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   FaSearch,
   FaBuilding,
@@ -9,47 +10,73 @@ import {
 const Exhibitors = () => {
   const [search, setSearch] = useState("");
 
-  const exhibitors = [
-    {
-      id: 1,
-      company: "Microsoft",
-      category: "Technology",
-      booth: "A-12",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-      description: "Cloud, AI and Enterprise Solutions",
-    },
-    {
-      id: 2,
-      company: "Google",
-      category: "Technology",
-      booth: "B-05",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-      description: "Search, AI & Cloud Products",
-    },
-    {
-      id: 3,
-      company: "OpenAI",
-      category: "Artificial Intelligence",
-      booth: "C-02",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg",
-      description: "Generative AI & GPT Solutions",
-    },
-    {
-      id: 4,
-      company: "Tesla",
-      category: "Innovation",
-      booth: "D-08",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
-      description: "Electric Vehicles & Robotics",
-    },
-  ];
+  const [exhibitors, setExhibitors] = useState([]);
+
+  const getExhibitors = async () => {
+    try {
+
+      const { data } = await axios.get(
+        "http://localhost:5000/api/exhibitors/approved"
+      );
+
+      if (data.success) {
+        setExhibitors(data.exhibitors);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+  };
+
+  useEffect(() => {
+    getExhibitors();
+  }, []);
+
+  // const exhibitors = [
+  //   {
+  //     id: 1,
+  //     company: "Microsoft",
+  //     category: "Technology",
+  //     booth: "A-12",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+  //     description: "Cloud, AI and Enterprise Solutions",
+  //   },
+  //   {
+  //     id: 2,
+  //     company: "Google",
+  //     category: "Technology",
+  //     booth: "B-05",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+  //     description: "Search, AI & Cloud Products",
+  //   },
+  //   {
+  //     id: 3,
+  //     company: "OpenAI",
+  //     category: "Artificial Intelligence",
+  //     booth: "C-02",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg",
+  //     description: "Generative AI & GPT Solutions",
+  //   },
+  //   {
+  //     id: 4,
+  //     company: "Tesla",
+  //     category: "Innovation",
+  //     booth: "D-08",
+  //     image:
+  //       "https://upload.wikimedia.org/wikipedia/commons/b/bd/Tesla_Motors.svg",
+  //     description: "Electric Vehicles & Robotics",
+  //   },
+  // ];
 
   const filtered = exhibitors.filter((item) =>
-    item.company.toLowerCase().includes(search.toLowerCase())
+    item.companyName
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
 
   return (
@@ -124,7 +151,7 @@ const Exhibitors = () => {
 
           <div
             className="col-lg-6 mb-4"
-            key={company.id}
+            key={company._id}
           >
 
             <div
@@ -139,8 +166,13 @@ const Exhibitors = () => {
                 <div className="d-flex">
 
                   <img
-                    src={company.image}
-                    alt={company.company}
+                    src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+                    // src={
+                    //   company.logo
+                    //     ? company.logo
+                    //     : "https://via.placeholder.com/80"
+                    // }
+                    alt={company.companyName}
                     style={{
                       width: "80px",
                       height: "80px",
@@ -152,11 +184,11 @@ const Exhibitors = () => {
                   <div className="flex-grow-1">
 
                     <span className="badge bg-primary mb-2">
-                      {company.category}
+                      {company.businessCategory}
                     </span>
 
                     <h4 className="fw-bold">
-                      {company.company}
+                      {company.companyName}
                     </h4>
 
                     <p className="text-muted">
@@ -167,8 +199,13 @@ const Exhibitors = () => {
 
                       <FaMapMarkerAlt className="text-danger me-2" />
 
-                      Booth {company.booth}
+                      Booth {company.booth?.boothNumber || "Not Assigned"}
 
+                    </p>
+
+                    <p className="text-muted">
+                      Expo:
+                      <strong> {company.expo?.title}</strong>
                     </p>
 
                     <button className="btn btn-primary">

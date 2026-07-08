@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import {
   FaCalendarAlt,
   FaClock,
@@ -9,6 +11,47 @@ import {
 } from "react-icons/fa";
 
 const EventDetails = () => {
+
+  const { id } = useParams();
+
+  const [event, setEvent] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+
+  const getEvent = async () => {
+    try {
+
+      const { data } = await axios.get(
+        `http://localhost:5000/api/expos/${id}`
+      );
+
+      if (data.success) {
+        setEvent(data.expo);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
+  useEffect(() => {
+    getEvent();
+  }, []);
+
+  if (loading) {
+    return <h3>Loading...</h3>;
+  }
+
+  if (!event) {
+    return <h3>Event Not Found</h3>;
+  }
+
   return (
     <div className="container-fluid">
 
@@ -19,6 +62,10 @@ const EventDetails = () => {
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600')",
+          // backgroundImage: `url(${event.banner
+          //     ? event.banner
+          //     : "https://via.placeholder.com/1400x500?text=EventSphere"
+          //   })`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "20px",
@@ -32,16 +79,15 @@ const EventDetails = () => {
           }}
         >
           <span className="badge bg-primary mb-3">
-            Technology Expo
+            {event.category}
           </span>
 
           <h1 className="fw-bold">
-            AI & Technology Expo 2026
+           {event.title}
           </h1>
 
           <p className="fs-5 mt-3">
-            Experience the future of Artificial Intelligence,
-            Robotics and Innovation.
+            {event.description}
           </p>
 
           <button className="btn btn-light btn-lg mt-3">
@@ -67,22 +113,22 @@ const EventDetails = () => {
 
                 <div className="col-md-6 mb-3">
                   <FaCalendarAlt className="text-primary me-2" />
-                  12 January 2026
+                  {event.description}
                 </div>
 
                 <div className="col-md-6 mb-3">
                   <FaClock className="text-success me-2" />
-                  09:00 AM - 06:00 PM
+                  {event.startTime} - {event.endTime}
                 </div>
 
                 <div className="col-md-6 mb-3">
                   <FaMapMarkerAlt className="text-danger me-2" />
-                  Karachi Expo Center
+                  {event.venue}, {event.city}
                 </div>
 
                 <div className="col-md-6 mb-3">
                   <FaUsers className="text-warning me-2" />
-                  5000+ Visitors
+                  {event.maxExhibitors} Exhibitors
                 </div>
 
               </div>
@@ -94,12 +140,7 @@ const EventDetails = () => {
               </h4>
 
               <p className="text-muted">
-                AI & Technology Expo is Pakistan's largest
-                technology exhibition where startups,
-                software companies and multinational
-                organizations showcase their latest
-                innovations. Visitors can attend seminars,
-                workshops and networking sessions.
+                {event.description}
               </p>
 
             </div>

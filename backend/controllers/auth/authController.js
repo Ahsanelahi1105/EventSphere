@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const crypto = require("crypto");
 const sendEmail = require("../../utils/sendEmail");
+const Exhibitor = require("../../models/Exhibitor");
 
 // ==========================
 // Register User
@@ -43,6 +44,26 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       role,
     });
+
+    // Automatically create exhibitor profile
+
+    if (role === "exhibitor") {
+
+      await Exhibitor.create({
+        user: user._id,
+        companyName: "",
+        ownerName: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        phone: user.phone,
+        website: "",
+        logo: "",
+        businessCategory: "",
+        address: "",
+        description: "",
+        products: [],
+      });
+
+    }
 
     res.status(201).json({
       success: true,
@@ -132,7 +153,7 @@ const loginUser = async (req, res) => {
 
   }
 
-  
+
 
 };
 

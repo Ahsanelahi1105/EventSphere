@@ -1,25 +1,118 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const booths = [
-  { id: "A1", status: "available" },
-  { id: "A2", status: "reserved" },
-  { id: "A3", status: "available" },
-  { id: "A4", status: "reserved" },
+// const booths = [
+//   { id: "A1", status: "available" },
+//   { id: "A2", status: "reserved" },
+//   { id: "A3", status: "available" },
+//   { id: "A4", status: "reserved" },
 
-  { id: "B1", status: "available" },
-  { id: "B2", status: "available" },
-  { id: "B3", status: "reserved" },
-  { id: "B4", status: "available" },
+//   { id: "B1", status: "available" },
+//   { id: "B2", status: "available" },
+//   { id: "B3", status: "reserved" },
+//   { id: "B4", status: "available" },
 
-  { id: "C1", status: "available" },
-  { id: "C2", status: "reserved" },
-  { id: "C3", status: "available" },
-  { id: "C4", status: "available" },
-];
+//   { id: "C1", status: "available" },
+//   { id: "C2", status: "reserved" },
+//   { id: "C3", status: "available" },
+//   { id: "C4", status: "available" },
+// ];
 
 const BoothSelection = () => {
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [booths, setBooths] = useState([]);
+
   const [selected, setSelected] = useState("");
+
+  const [exhibitorId, setExhibitorId] = useState("");
+
+  const [loading, setLoading] = useState(true);
+
+  const loadBooths = async () => {
+
+    try {
+
+      // Logged in Exhibitor
+
+      const { data: exhibitorData } = await axios.get(
+        `http://localhost:5000/api/exhibitors/${user.id}`
+      );
+
+      setExhibitorId(exhibitorData.exhibitor._id);
+
+      // My Applications
+
+      const { data: applicationData } = await axios.get(
+        `http://localhost:5000/api/applications/${exhibitorData.exhibitor._id}`
+      );
+
+      const approvedApplication =
+        applicationData.applications.find(
+          (a) => a.status === "Approved"
+        );
+
+      if (!approvedApplication) {
+        alert("Your application is not approved yet.");
+        return;
+      }
+
+      // Available Booths
+
+      const { data } = await axios.get(
+        `http://localhost:5000/api/booths/expo/${approvedApplication.expo._id}`
+      );
+
+      if (data.success) {
+        setBooths(data.booths);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+    loadBooths();
+  }, []);
+
+  const reserveBooth = async () => {
+
+    if (!selected) return;
+
+    try {
+
+      const { data } = await axios.put(
+        `http://localhost:5000/api/booths/book/${selected}`,
+        {
+          exhibitorId,
+        }
+      );
+
+      alert(data.message);
+
+      loadBooths();
+
+      setSelected("");
+
+    } catch (error) {
+
+      alert(
+        error.response?.data?.message ||
+        "Booking Failed"
+      );
+
+    }
+
+  };
 
   return (
     <div className="container-fluid">
@@ -69,31 +162,27 @@ const BoothSelection = () => {
 
               <div
                 className="col-lg-3 col-md-4 col-6 mb-4"
-                key={booth.id}
+                key={booth._id}
               >
 
                 <div
                   onClick={() => {
-
-                    if (
-                      booth.status === "available"
-                    ) {
-                      setSelected(booth.id);
+                    if (booth.status === "Available") {
+                      setSelected(booth._id);
                     }
-
                   }}
                   style={{
                     cursor:
-                      booth.status === "reserved"
+                      booth.status === "Booked"
                         ? "not-allowed"
                         : "pointer",
 
                     background:
-                      selected === booth.id
+                      selected === booth._id
                         ? "#3B82F6"
-                        : booth.status === "available"
-                        ? "#22C55E"
-                        : "#EF4444",
+                        : booth.status === "Available"
+                          ? "#22C55E"
+                          : "#EF4444",
 
                     color: "#fff",
 
@@ -113,15 +202,11 @@ const BoothSelection = () => {
                   }}
                 >
 
-                  <h3>
-
-                    {booth.id}
-
-                  </h3>
+                  <h3>{booth.boothNumber}</h3>
 
                   <small>
 
-                    {selected === booth.id
+                    {selected === booth._id
                       ? "Selected"
                       : booth.status}
 
@@ -144,10 +229,9 @@ const BoothSelection = () => {
         <button
           className="btn btn-primary px-5"
           disabled={!selected}
+          onClick={reserveBooth}
         >
-
-          Reserve Booth
-
+          Book Booth
         </button>
 
       </div>

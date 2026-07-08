@@ -13,6 +13,7 @@ import SessionManagement from "../pages/admin/SessionManagement";
 import Reports from "../pages/admin/Reports";
 import Analytics from "../pages/admin/Analytics";
 import Settings from "../pages/admin/Settings";
+import ApplicationManagement from "../pages/admin/ApplicationManagement";
 
 const AdminRoutes = () => (
 
@@ -36,6 +37,7 @@ const AdminRoutes = () => (
     <Route path="reports" element={<Reports />} />
     <Route path="analytics" element={<Analytics />} />
     <Route path="settings" element={<Settings />} />
+    <Route path="applications" element={<ApplicationManagement />} />
   </Route>
 );
 

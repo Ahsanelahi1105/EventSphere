@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   FaSearch,
   FaCalendarAlt,
@@ -9,48 +11,82 @@ import {
 const Events = () => {
   const [search, setSearch] = useState("");
 
-  const events = [
-    {
-      id: 1,
-      title: "AI & Technology Expo",
-      category: "Technology",
-      date: "12 Jan 2026",
-      location: "Karachi Expo Center",
-      image:
-        "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
-    },
-    {
-      id: 2,
-      title: "Healthcare Innovation Expo",
-      category: "Healthcare",
-      date: "18 Feb 2026",
-      location: "Lahore Expo Center",
-      image:
-        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
-    },
-    {
-      id: 3,
-      title: "Startup Summit",
-      category: "Business",
-      date: "25 Mar 2026",
-      location: "Islamabad Convention Center",
-      image:
-        "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200",
-    },
-    {
-      id: 4,
-      title: "Education Expo",
-      category: "Education",
-      date: "05 Apr 2026",
-      location: "Peshawar Expo Hall",
-      image:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200",
-    },
-  ];
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // const events = [
+  //   {
+  //     id: 1,
+  //     title: "AI & Technology Expo",
+  //     category: "Technology",
+  //     date: "12 Jan 2026",
+  //     location: "Karachi Expo Center",
+  //     image:
+  //       "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200",
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Healthcare Innovation Expo",
+  //     category: "Healthcare",
+  //     date: "18 Feb 2026",
+  //     location: "Lahore Expo Center",
+  //     image:
+  //       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Startup Summit",
+  //     category: "Business",
+  //     date: "25 Mar 2026",
+  //     location: "Islamabad Convention Center",
+  //     image:
+  //       "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1200",
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Education Expo",
+  //     category: "Education",
+  //     date: "05 Apr 2026",
+  //     location: "Peshawar Expo Hall",
+  //     image:
+  //       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200",
+  //   },
+  // ];
+
+  const getEvents = async () => {
+    try {
+
+      const { data } = await axios.get(
+        "http://localhost:5000/api/expos/active"
+      );
+
+      if (data.success) {
+        setEvents(data.expos);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
+  useEffect(() => {
+    getEvents();
+  }, []);
+
 
   const filtered = events.filter((event) =>
     event.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  if (loading) {
+    return <h3>Loading...</h3>;
+  }
 
   return (
     <div className="container-fluid">
@@ -139,7 +175,7 @@ const Events = () => {
 
           <div
             className="col-lg-4 col-md-6 mb-4"
-            key={event.id}
+            key={event._id}
           >
 
             <div
@@ -153,7 +189,12 @@ const Events = () => {
               <div className="position-relative">
 
                 <img
-                  src={event.image}
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200"
+                  // src={
+                  //   event.banner
+                  //     ? event.banner
+                  //     : "https://via.placeholder.com/600x300?text=EventSphere"
+                  // }
                   alt={event.title}
                   className="card-img-top"
                   style={{
@@ -189,7 +230,7 @@ const Events = () => {
 
                   <FaCalendarAlt className="me-2" />
 
-                  {event.date}
+                  {new Date(event.startDate).toLocaleDateString()}
 
                 </p>
 
@@ -197,13 +238,16 @@ const Events = () => {
 
                   <FaMapMarkerAlt className="me-2 text-danger" />
 
-                  {event.location}
+                  {event.venue}
 
                 </p>
 
-                <button className="btn btn-primary w-100 mt-3">
+                <Link
+                  to={`/attendee/events/${event._id}`}
+                  className="btn btn-primary w-100 mt-3"
+                >
                   View Details
-                </button>
+                </Link>
 
               </div>
 

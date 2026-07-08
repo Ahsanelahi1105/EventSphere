@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import axios from "axios";
 import "./Auth.css";
+import api from "../../services/api";
 
 const Login = () => {
   const navigate = useNavigate();

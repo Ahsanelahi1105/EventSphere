@@ -127,10 +127,37 @@ const deleteExpo = async (req, res) => {
   }
 };
 
+// ================= ACTIVE EXPOS =================
+
+const getActiveExpos = async (req, res) => {
+  try {
+
+    const expos = await Expo.find({
+      status: "Active",
+    }).sort({
+      startDate: 1,
+    });
+
+    res.status(200).json({
+      success: true,
+      expos,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+
+  }
+};
+
 module.exports = {
   createExpo,
   getAllExpos,
   getExpoById,
   updateExpo,
   deleteExpo,
+  getActiveExpos,
 };

@@ -8,11 +8,14 @@ const {
   getExpoById,
   updateExpo,
   deleteExpo,
+  getActiveExpos,
 } = require("../controllers/expo/expoController");
 
 router.post("/", createExpo);
 
 router.get("/", getAllExpos);
+
+router.get("/active", getActiveExpos);
 
 router.get("/:id", getExpoById);
 

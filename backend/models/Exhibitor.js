@@ -2,60 +2,78 @@ const mongoose = require("mongoose");
 
 const exhibitorSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
+    },
+
     companyName: {
       type: String,
-      required: true,
-      trim: true,
+      default: "",
     },
 
     ownerName: {
       type: String,
-      required: true,
-      trim: true,
+      default: "",
     },
 
     email: {
       type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
+      default: "",
     },
 
     phone: {
       type: String,
-      required: true,
+      default: "",
     },
 
-    category: {
+    website: {
       type: String,
-      required: true,
+      default: "",
     },
 
-    expo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Expo",
-      required: true,
-    },
-
-    booth: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Booth",
-      default: null,
-    },
-
-    status: {
+    logo: {
       type: String,
-      enum: [
-        "Pending",
-        "Approved",
-        "Rejected",
-      ],
-      default: "Pending",
+      default: "",
+    },
+
+    businessCategory: {
+      type: String,
+      default: "",
+    },
+
+    address: {
+      type: String,
+      default: "",
     },
 
     description: {
       type: String,
       default: "",
+    },
+
+    products: [
+      {
+        type: String,
+      },
+    ],
+
+    expo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Expo",
+    },
+
+    booth: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booth",
+    },
+
+    applicationStatus: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
     },
   },
   {
@@ -63,7 +81,4 @@ const exhibitorSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model(
-  "Exhibitor",
-  exhibitorSchema
-);
+module.exports = mongoose.model("Exhibitor", exhibitorSchema);

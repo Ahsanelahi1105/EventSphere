@@ -12,6 +12,7 @@ import {
   FaCog,
   FaSignOutAlt,
   FaUserShield,
+  FaFileAlt,
 } from "react-icons/fa";
 
 const AdminSidebar = () => {
@@ -40,6 +41,12 @@ const AdminSidebar = () => {
       name: "Exhibitors",
       icon: <FaUsers />,
       path: "/admin/exhibitors",
+    },
+
+    {
+      name: "Applications",
+      icon: <FaFileAlt />,
+      path: "/admin/applications",
     },
 
     {
